@@ -1,41 +1,25 @@
-import { useEffect, useState } from "react";
+import React, { useEffect } from "react";
+import { View, Text, Image, ActivityIndicator } from "react-native";
 import { useRouter } from "expo-router";
-import { View, Text, Image, ActivityIndicator, Animated } from "react-native";
+import { checkUserSession } from "./config"; // Import the checkUserSession function
 
-export default function Index() {
+export default function SplashScreen() {
   const router = useRouter();
-  const [isReady, setIsReady] = useState(false);
-  const fadeAnim = new Animated.Value(0); 
 
   useEffect(() => {
-    // Start fade-in animation
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 800,
-      useNativeDriver: true,
-    }).start();
+    // Call the checkUserSession function to handle routing based on authentication state
+    checkUserSession(router);
+  }, [router]);
 
-    // Navigate after 1.5 (1500) seconds
-    const timer = setTimeout(() => {
-      setIsReady(true);
-      router.replace("/screens/splash"); // Change/Balhin to "/screens/login" 
-    }, 1500);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (!isReady) {
-    return (
-      <View className="flex-1 justify-center items-center bg-[#FF9500]">
-        <Animated.Image
-          source={require("../assets/images/pet-removebg-preview-removebg-preview.png")}
-          style={{ width: 150, height: 150, opacity: fadeAnim }}
-          resizeMode="contain"
-        />
-        <ActivityIndicator size="large" color="#fff" className="mt-12" />
-      </View>
-    );
-  }
-
-  return null;
+  return (
+    <View className="flex-1 bg-[#FF9500] justify-center items-center">
+      <Image
+        source={require("../assets/images/pet-removebg-preview-removebg-preview.png")}
+        style={{ width: 150, height: 150 }}
+        resizeMode="contain"
+      />
+      <Text className="text-white text-lg font-semibold mt-4">Loading...</Text>
+      <ActivityIndicator size="large" color="white" className="mt-2" />
+    </View>
+  );
 }

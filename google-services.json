@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "234344734401",
+    "project_id": "petsolutionsinventory",
+    "storage_bucket": "petsolutionsinventory.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:234344734401:android:e5cd8e9f2bfec87c3ebe40",
+        "android_client_info": {
+          "package_name": "com.petsolution.petsolutioninventory"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJg0igrCJqkvvHdKhgrYLm5CESHFnS1N0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

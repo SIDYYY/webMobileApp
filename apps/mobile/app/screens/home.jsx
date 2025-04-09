@@ -10,7 +10,7 @@ export default function HomeScreen() {
     if (role === "admin") {
       router.replace("/(admin)/admin");
     } else {
-      router.replace("/(tabs)/buyer");
+      router.replace("/(tabs)/dashboard");
     }
   }, [role]);
 

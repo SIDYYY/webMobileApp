@@ -10,7 +10,7 @@ export default function SplashScreen() {
     <View className="flex-1 bg-[#FF9500]">
 
     {/* Top */}
-    <View className="flex-auto justify-center items-center bg-white rounded-b-[180px]">
+    <View className="flex-1 justify-center items-center bg-white rounded-b-[180px]">
         {/* Client Logo */}
       <Image
         source={require("../../assets/images/pet-removebg-preview-removebg-preview.png")}
@@ -23,12 +23,12 @@ export default function SplashScreen() {
     <View className="flex-1 justify-center items-center bg-[#FF9500]">
 
       {/* Welcome Text */}
-      <Text className="text-[#fff] text-5xl font-bold w-2/3 text-center leading-tight">
+      <Text className="text-[#fff] text-5xl font-bold text-center leading-tight">
         Have a life with your pet!
       </Text>
 
       {/* Get Started Button */}
-      <View className="w-3/5">
+      <View className="w-1/2">
         <TouchableOpacity
             className="mt-10 bg-[#FFDBC6] rounded-full flex items-center justify-center h-14"
             onPress={() => router.replace("/screens/register")}

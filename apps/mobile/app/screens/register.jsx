@@ -4,63 +4,96 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  Image,
-  KeyboardAvoidingView,
   ScrollView,
+  KeyboardAvoidingView,
   Platform,
+  Alert,
 } from "react-native";
 import { useRouter } from "expo-router";
 import { FontAwesome5 } from "@expo/vector-icons";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getFirestore, doc, setDoc } from "firebase/firestore";
+import { app } from "../config"; // Make sure you have configured Firebase
 
 export default function RegisterScreen() {
   const router = useRouter();
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [gender, setGender] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const genders = ["Male", "Female"];  
+  const genders = ["Male", "Female"];
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [role, setRole] = useState("user"); // Default role is "user"
+
+  // Function to handle registration
+  const handleRegister = async () => {
+    if (!firstName || !lastName || !email || !password || !confirmPassword || !gender) {
+      Alert.alert("Error", "Please fill out all fields.");
+      return;
+    }
+    if (password !== confirmPassword) {
+      Alert.alert("Error", "Passwords do not match.");
+      return;
+    }
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // Store user details in Firestore
+      await setDoc(doc(db, "users", user.uid), {
+        firstName,
+        lastName,
+        email,
+        gender,
+        role, // Store user role in Firestore
+        createdAt: new Date(),
+      });
+
+      Alert.alert("Success", "Registration successful!");
+
+      // Navigate based on role
+      if (role === "admin") {
+        router.replace("/(admin)/admin");
+      } else {
+        router.replace("/(tabs)/dashboard");
+      }
+    } catch (error) {
+      Alert.alert("Registration Error", error.message);
+    }
+  };
 
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       className="flex-1 bg-[#FF9500]"
     >
-      {/* Fixed Logo Section */}
-      
-
-      {/* Scrollable Form Section */}
-      <ScrollView
-        contentContainerStyle={{ flexGrow: 1}}
-        keyboardShouldPersistTaps="handled"
-        showsVerticalScrollIndicator={false}
-      >
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
         <View className="flex-auto justify-center items-center">
-        <FontAwesome5 name="paw" size={80} color="#8E5E3C" />
+          <FontAwesome5 name="paw" size={80} color="#8E5E3C" />
         </View>
         <View className="flex-1 justify-center items-center bg-[#FF9500] px-6 py-8 rounded-t-[50px]">
-          {/* Register Title with Paw Icon */}
-          
           <View className="flex-row justify-center items-center mb-6">
-            <Text className="text-5xl text-center text-[#fff] font-bold">
-              Register
-            </Text>
+            <Text className="text-5xl text-center text-[#fff] font-bold">Register</Text>
           </View>
 
           {/* Form Inputs */}
           <TextInput
-            className="w-full h-12 border border-gray-400 px-4 rounded-lg mb-4"
+            className="w-full h-12 border border-gray-400 px-4 rounded-lg mb-4 bg-white"
             placeholder="First Name"
-            placeholderTextColor="#fff"
+            placeholderTextColor="#000"
             value={firstName}
             onChangeText={setFirstName}
           />
           <TextInput
-            className="w-full h-12 border border-gray-400 px-4 rounded-lg mb-4"
+            className="w-full h-12 border border-gray-400 px-4 rounded-lg mb-4 bg-white"
             placeholder="Last Name"
-            placeholderTextColor="#ffff"
+            placeholderTextColor="#000"
             value={lastName}
             onChangeText={setLastName}
           />
@@ -89,36 +122,37 @@ export default function RegisterScreen() {
               </View>
             )}
           </View>
+
           <TextInput
-            className="w-full h-12 border border-gray-400 px-4 rounded-lg mb-4"
+            className="w-full h-12 border border-gray-400 px-4 rounded-lg mb-4 bg-white"
             placeholder="Email"
-            placeholderTextColor="#ffff"
+            placeholderTextColor="#000"
             value={email}
             onChangeText={setEmail}
             keyboardType="email-address"
             autoCapitalize="none"
           />
           <TextInput
-            className="w-full h-12 border border-gray-400 px-4 rounded-lg mb-4"
+            className="w-full h-12 border border-gray-400 px-4 rounded-lg mb-4 bg-white"
             placeholder="Password"
-            placeholderTextColor="#ffff"
+            placeholderTextColor="#000"
             value={password}
             onChangeText={setPassword}
             secureTextEntry
           />
           <TextInput
-            className="w-full h-12 border border-gray-400 px-4 rounded-lg mb-4"
+            className="w-full h-12 border border-gray-400 px-4 rounded-lg mb-4 bg-white"
             placeholder="Confirm Password"
-            placeholderTextColor="#ffff"
+            placeholderTextColor="#000"
             value={confirmPassword}
             onChangeText={setConfirmPassword}
             secureTextEntry
           />
-
+                    
           {/* Register Button */}
           <TouchableOpacity
             className="bg-[#8E5E3C] w-full h-12 rounded-lg flex items-center justify-center"
-            onPress={() => router.replace("/screens/home")}
+            onPress={handleRegister}
           >
             <Text className="text-white text-lg font-semibold">Register</Text>
           </TouchableOpacity>
