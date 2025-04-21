@@ -4,7 +4,6 @@ export const  mostBoughtProducts = [
       name: "Premium Dog Food",
       image: "https://www.caminadepet.com/wp-content/uploads/2022/09/omegapro.png",
       price: "$25.99",
-      quantity: "30",
       category: "Food",
       description: "Nutritious and delicious dog food.",
     },

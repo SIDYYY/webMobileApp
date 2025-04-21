@@ -9,6 +9,9 @@ export default function ScreenLayout() {
       <Stack.Screen name="login" options={{  headerShown: false  }} />
       <Stack.Screen name="register" options={{  headerShown: false  }} />
       <Stack.Screen name="home" options={{  headerShown: false }} />
+      <Stack.Screen name="productDetail" options={{  title: 'About The Product' }} />
+      <Stack.Screen name="manageProduct" options={{  title: 'Manage The Product' }} />
+
     </Stack>
   );
 }

@@ -53,7 +53,6 @@ export const checkUserSession = (router) => {
 export const logout = async (router) => {
   try {
     await signOut(auth); // Sign out the user from Firebase
-    router.replace("/screens/splash"); // Redirect to splash screen or login screen
   } catch (error) {
     console.error("Error signing out: ", error.message); // Handle errors here
   }

@@ -14,5 +14,5 @@
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
     "nativewind-env.d.ts"
-, "app/screens/login.jsx", "app/screens/register.jsx", "app/index.tsx"  ]
+, "app/screens/login.jsx", "app/screens/register.jsx", "app/index.tsx", "app/(tabs)/shop.jsx", "app/(admin)/manage.jsx", "app/(tabs)/dashboard.jsx"  ]
 }

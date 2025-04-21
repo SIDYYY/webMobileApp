@@ -1,35 +1,23 @@
-import { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  Image,
-  KeyboardAvoidingView,
-  ScrollView,
-  Platform,
-  Alert,
-  ActivityIndicator,
-} from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, TextInput, TouchableOpacity, Alert, ActivityIndicator, KeyboardAvoidingView, ScrollView, Platform, Image } from "react-native";
+import { auth, db,signInWithEmailAndPassword } from "../config"; // Firebase config
+import { onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "expo-router";
 import { FontAwesome5 } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { auth, db, signInWithEmailAndPassword } from "../config";
-import { onAuthStateChanged } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 
 export default function LoginScreen() {
-  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
-  // Check if the user is already logged in
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         const storedRole = await AsyncStorage.getItem("userRole");
-        router.replace({ pathname: "/screens/home", params: { role: storedRole} });
+        router.replace({ pathname: "/screens/home", params: { role: storedRole } });
       }
     });
 
@@ -47,7 +35,7 @@ export default function LoginScreen() {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // Fetch role from Firestore
+      // Fetch role from Firestore (Optional, depending on your app)
       const userDoc = await getDoc(doc(db, "users", user.uid)); // db from Firebase config
       const role = userDoc.exists() ? userDoc.data().role : "user"; // Default to "user" if no role found
 
